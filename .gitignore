@@ -1,0 +1,7 @@
+/backend-app/node_modules
+/backend-app/package-lock.json
+
+/frontend-app/node_modules
+/frontend-app/.vscode
+/frontend-app/.angular
+/frontend-app/package-lock.json
