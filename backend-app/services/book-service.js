@@ -10,7 +10,7 @@ const getAllBooks = async (params) => {
     }
   }
 
-  if (Object.values(query).length < 1) {
+  if (Object.values(params).length > 0 && Object.values(query).length < 1) {
     return [];
   }
 
