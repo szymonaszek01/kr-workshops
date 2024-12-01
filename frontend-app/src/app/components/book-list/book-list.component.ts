@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { MatCardModule } from '@angular/material/card';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-book-list',
@@ -12,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './book-list.component.scss',
 })
 export class BookListComponent {
+  booksSub!: Subscription;
+
   books: Book[];
 
   constructor(private bookService: BookService) {
@@ -19,9 +22,13 @@ export class BookListComponent {
   }
 
   ngOnInit(): void {
-    this.bookService.getAll().subscribe({
+    this.booksSub = this.bookService.getAll().subscribe({
       next: (books) => (this.books = books),
       error: (error) => console.error(error),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.booksSub.unsubscribe();
   }
 }
