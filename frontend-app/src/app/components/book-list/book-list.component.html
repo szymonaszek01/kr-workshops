@@ -1,2 +1,28 @@
-<p>Products:</p>
-<p *ngFor="let book of books">{{ book.title }}<br /></p>
+<div class="w-100 flex-col gap-20">
+  <h1>Books</h1>
+  <mat-card *ngFor="let book of books" appearance="outlined">
+    <mat-card-content>
+      <div class="w-100 flex-col gap-20">
+        <h2>{{ book.title }}</h2>
+        <div class="w-100 flex-row space-between">
+          <div class="w-100 flex-col gap-5">
+            <p><strong class="green">Author</strong></p>
+            <p>{{ book.author }}</p>
+          </div>
+          <div class="w-100 flex-col gap-5">
+            <p><strong class="green">Genre</strong></p>
+            <p>{{ book.genre }}</p>
+          </div>
+          <div class="w-100 flex-col gap-5">
+            <p><strong class="green">Read</strong></p>
+            <p>{{ book.read }}</p>
+          </div>
+        </div>
+        <div class="w-100 flex-row gap-20">
+          <button type="button">Edit</button>
+          <button type="button">Delete</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

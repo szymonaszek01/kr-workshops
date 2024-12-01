@@ -1,1 +1,105 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+
+$black: #000000b4;
+
+$eve-ticketing-frontend-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$cyan-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+:root {
+  @include mat.all-component-themes($eve-ticketing-frontend-theme);
+  --app-background: #e8f5e9;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 30px 10%;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--app-background);
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 25px;
+  font-weight: 500;
+  word-spacing: 1px;
+  margin: 0;
+  padding: 0;
+  color: $black;
+}
+
+h2 {
+  font-size: 17px;
+  font-weight: 500;
+  word-spacing: 1px;
+  margin: 0;
+  padding: 0;
+  color: $black;
+}
+
+p {
+  font-size: 13px;
+  font-weight: 500;
+  word-spacing: 1px;
+  margin: 0;
+  padding: 0;
+  color: $black;
+
+  .green {
+    color: green;
+  }
+}
+
+button {
+  padding: 7px 13px;
+  font-size: 14px;
+  font-weight: 500;
+  word-spacing: 1px;
+  color: $black;
+  background: #e8f5e9;
+  border: 2px solid #e8f5e9;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: transparent;
+}

@@ -2,11 +2,12 @@ import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { Book } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, MatCardModule],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss',
 })
