@@ -4,3 +4,9 @@ export interface Book {
   genre: string;
   read: boolean;
 }
+
+export interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
