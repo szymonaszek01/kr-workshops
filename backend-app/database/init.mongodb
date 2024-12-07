@@ -1,54 +1,102 @@
 // Select the database to use.
 use("kr-workshops-1");
 
-// Insert a few documents into the sales collection.
-db.books.insert([
+db.books.insertMany([
   {
     title: "War and Peace",
     genre: "Historical Fiction",
     author: "Lev Nikolayevich Tolstoy",
-    read: false,
   },
   {
     title: "Les MisĂ©rables",
     genre: "Historical Fiction",
     author: "Victor Hugo",
-    read: false,
   },
   {
     title: "The Time Machine",
     genre: "Science Fiction",
     author: "H. G. Wells",
-    read: false,
   },
   {
     title: "A Journey into the Center of the Earth",
     genre: "Science Fiction",
     author: "Jules Verne",
-    read: false,
   },
   {
     title: "The Dark World",
     genre: "Fantasy",
     author: "Henry Kuttner",
-    read: false,
   },
   {
     title: "The Wind in the Willows",
     genre: "Fantasy",
     author: "Kenneth Grahame",
-    read: false,
   },
   {
     title: "Life On The Mississippi",
     genre: "History",
     author: "Mark Twain",
-    read: false,
   },
   {
     title: "Childhood",
     genre: "Biography",
     author: "Lev Nikolayevich Tolstoy",
-    read: false,
+  },
+]);
+
+const books = db.books.find().toArray();
+const bookMap = {};
+books.forEach((book) => {
+  bookMap[book.title] = book._id;
+});
+
+db.warehousedetails.insertMany([
+  {
+    bookId: bookMap["War and Peace"],
+    quantity: 1000,
+    price: 10,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["Les Misérables"],
+    quantity: 1100,
+    price: 11,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["The Time Machine"],
+    quantity: 2000,
+    price: 20,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["A Journey into the Center of the Earth"],
+    quantity: 2100,
+    price: 21,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["The Dark World"],
+    quantity: 3000,
+    price: 30,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["The Wind in the Willows"],
+    quantity: 3100,
+    price: 30,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["Life On The Mississippi"],
+    quantity: 4000,
+    price: 40,
+    currency: "EUR",
+  },
+  {
+    bookId: bookMap["Childhood"],
+    quantity: 4100,
+    price: 40,
+    currency: "EUR",
   },
 ]);
