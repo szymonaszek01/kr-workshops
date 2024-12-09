@@ -4,3 +4,9 @@ export interface Book {
   author: string;
   genre: string;
 }
+
+export interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
