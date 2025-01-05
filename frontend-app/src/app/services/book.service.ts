@@ -15,7 +15,7 @@ export class BookService {
     return this.http.get<Book[]>(BookService.BOOK_URL);
   }
 
-  public getOne(id: number): Observable<Book> {
-    return this.http.get<Book>(BookService.BOOK_URL + encodeURIComponent(id));
+  public getOne(id: string): Observable<Book> {
+    return this.http.get<Book>(BookService.BOOK_URL + `/${encodeURIComponent(id)}`);
   }
 }
