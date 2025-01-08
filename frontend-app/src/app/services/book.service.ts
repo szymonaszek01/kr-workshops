@@ -7,7 +7,7 @@ import { Book } from '../models/book.model';
   providedIn: 'root',
 })
 export class BookService {
-  private static BOOK_URL: string = 'http://localhost:4000/api/books';
+  private static readonly BOOK_URL: string = 'http://localhost:4000/api/books';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +15,9 @@ export class BookService {
     return this.http.get<Book[]>(BookService.BOOK_URL);
   }
 
-  public getOne(id: number): Observable<Book> {
-    return this.http.get<Book>(BookService.BOOK_URL + encodeURIComponent(id));
+  public getOne(id: string): Observable<Book> {
+    return this.http.get<Book>(
+      BookService.BOOK_URL + '/' + encodeURIComponent(id)
+    );
   }
 }
