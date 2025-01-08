@@ -1,21 +1,37 @@
 <div class="w-100 flex-col gap-20">
   <h1>Books</h1>
-  <mat-card *ngFor="let book of books" appearance="outlined">
+  <mat-card
+    *ngFor="let bookWareHouseDetail of bookWareHouseDetails"
+    appearance="outlined"
+  >
     <mat-card-content>
       <div class="w-100 flex-col gap-20">
-        <h2>{{ book.title }}</h2>
+        <div class="w-100 flex-col gap-5">
+          <p><strong class="green">Title</strong></p>
+          <p>{{ bookWareHouseDetail.book.title }}</p>
+        </div>
         <div class="w-100 flex-row space-between">
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Author</strong></p>
-            <p>{{ book.author }}</p>
+            <p>{{ bookWareHouseDetail.book.author }}</p>
           </div>
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Genre</strong></p>
-            <p>{{ book.genre }}</p>
+            <p>{{ bookWareHouseDetail.book.genre }}</p>
           </div>
           <div class="w-100 flex-col gap-5">
-            <p><strong class="green">Read</strong></p>
-            <p>{{ book.read }}</p>
+            <p><strong class="green">Quantity</strong></p>
+            <p>{{ bookWareHouseDetail.warehouseDetail.quantity }}</p>
+          </div>
+          <div class="w-100 flex-col gap-5">
+            <p><strong class="green">Price</strong></p>
+            <p>
+              {{
+                bookWareHouseDetail.warehouseDetail.price +
+                  " " +
+                  bookWareHouseDetail.warehouseDetail.currency
+              }}
+            </p>
           </div>
         </div>
         <div class="w-100 flex-row gap-20">
