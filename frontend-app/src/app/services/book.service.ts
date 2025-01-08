@@ -7,7 +7,7 @@ import { Book } from '../models/book.model';
   providedIn: 'root',
 })
 export class BookService {
-  public static readonly BOOK_URL: string = 'http://localhost:4000/api/books';
+  private static readonly BOOK_URL: string = 'http://localhost:4000/api/books';
 
   constructor(private http: HttpClient) {}
 

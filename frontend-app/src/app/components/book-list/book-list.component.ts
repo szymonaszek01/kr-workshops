@@ -50,15 +50,12 @@ export class BookListComponent {
         (
           detail //  map z js
         ) => {
-          console.log(detail);
           return this.bookService.getOne(detail.bookId).pipe(
-            tap((book) => console.log(book)),
             map((book) => ({
               //map z RxJs
               book,
               warehouseDetail: detail,
-            })),
-            tap((bookWareHouseDetail) => console.log(bookWareHouseDetail))
+            }))
           );
         }
       );
