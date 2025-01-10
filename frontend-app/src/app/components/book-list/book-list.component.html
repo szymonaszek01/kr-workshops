@@ -1,25 +1,37 @@
 <div class="w-100 flex-col gap-20">
   <h1>Books</h1>
-  <mat-card *ngFor="let bookWarehouseDetail of bookWarehouseDetails" appearance="outlined">
+  <mat-card
+    *ngFor="let bookWareHouseDetail of bookWareHouseDetails"
+    appearance="outlined"
+  >
     <mat-card-content>
       <div class="w-100 flex-col gap-20">
-        <h2>{{ bookWarehouseDetail.book.title }}</h2>
+        <div class="w-100 flex-col gap-5">
+          <p><strong class="green">Title</strong></p>
+          <p>{{ bookWareHouseDetail.book.title }}</p>
+        </div>
         <div class="w-100 flex-row space-between">
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Author</strong></p>
-            <p>{{ bookWarehouseDetail.book.author }}</p>
+            <p>{{ bookWareHouseDetail.book.author }}</p>
           </div>
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Genre</strong></p>
-            <p>{{ bookWarehouseDetail.book.genre }}</p>
+            <p>{{ bookWareHouseDetail.book.genre }}</p>
           </div>
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Quantity</strong></p>
-            <p>{{ bookWarehouseDetail.warehouseDetail.quantity }}</p>
+            <p>{{ bookWareHouseDetail.warehouseDetail.quantity }}</p>
           </div>
           <div class="w-100 flex-col gap-5">
             <p><strong class="green">Price</strong></p>
-            <p>{{ bookWarehouseDetail.warehouseDetail.price }} {{ bookWarehouseDetail.warehouseDetail.currency }}</p>
+            <p>
+              {{
+                bookWareHouseDetail.warehouseDetail.price +
+                  " " +
+                  bookWareHouseDetail.warehouseDetail.currency
+              }}
+            </p>
           </div>
         </div>
         <div class="w-100 flex-row gap-20">
