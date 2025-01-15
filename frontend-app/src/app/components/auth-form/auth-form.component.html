@@ -13,6 +13,11 @@
               formControlName="email"
             />
           </div>
+
+          @if(isEmailInvalid()){
+            <p class="control-error">{{getEmailErrorMessage()}}</p>
+            }
+
           <div class="flex-col">
             <label for="password">Password</label>
             <input
@@ -23,13 +28,11 @@
             />
           </div>
 
-          <button type="submit">Login</button>
+          @if(isPasswordInvalid()){
+            <p class="control-error">Please enter valid password</p>
+            }
 
-          @if(emailIsInvalid){
-          <p class="control-error">Please enter valid email</p>
-          } @if(passwordIsInvalid){
-          <p class="control-error">Please enter valid password</p>
-          }
+          <button type="submit">Login</button>
         </div>
       </mat-card-content>
     </mat-card>

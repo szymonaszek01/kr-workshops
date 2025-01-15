@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {
+  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -24,21 +25,26 @@ export class AuthFormComponent {
     }),
   });
 
-  get emailIsInvalid() {
-    return (
-      this.loginForm.controls.email.touched &&
-      this.loginForm.controls.email.invalid
-    );
+  isEmailInvalid(): boolean | undefined {
+    console.log(this.loginForm.get('email')?.errors);
+    return this.loginForm.get('email')?.touched && this.loginForm.get('email')?.invalid;
   }
 
-  get passwordIsInvalid() {
-    return (
-      this.loginForm.controls.password.touched &&
-      this.loginForm.controls.password.invalid
-    );
+  getEmailErrorMessage(): string {
+    const errors = this.loginForm.get('email')?.errors;
+    if (!errors) {
+      return '';
+    }
+    return errors['required'] ? 'Email is required' : 'Email has not a vaild structure'; 
+  }
+
+  isPasswordInvalid() {
+    console.log(this.loginForm.get('password')?.errors);
+    return this.loginForm.get('password')?.touched && this.loginForm.get('password')?.invalid;
   }
 
   onSubmit() {
+    // if form is invalid, console log error.
     console.log('form: ', this.loginForm);
     const userEmail = this.loginForm.value.email;
     const userPassword = this.loginForm.value.password;
