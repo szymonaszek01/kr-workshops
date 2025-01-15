@@ -29,6 +29,7 @@ body {
   margin: 30px 10%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: var(--app-background);
+  font-size: 62.5%;
 }
 
 .w-100 {
@@ -113,10 +114,35 @@ button {
 button:hover {
   background: transparent;
 }
+label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  display: block;
+}
 
 input {
   border: black 1px solid;
   border-radius: 4px;
-  height: 2.3rem;
+  height: 1.5rem;
   background: transparent;
+  padding: 0.5rem 1rem;
+  margin-top: 0.2rem;
+
+  &::placeholder {
+    color: #cecbcb;
+    font-size: 1rem;
+  }
+}
+
+input.ng-invalid.ng-touched {
+  background-color: #fbdcd6;
+  border-color: #f84e2c;
+  &::placeholder {
+    color: #f84e2c;
+  }
+}
+
+.control-error {
+  color: #ffca99;
+  height: 0.2rem;
 }
