@@ -130,7 +130,7 @@ input {
 
   &::placeholder {
     color: #cecbcb;
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -144,5 +144,6 @@ input.ng-invalid.ng-touched {
 
 .control-error {
   color: #f84e2c;
-  height: 0.15rem;
+  font-size: 0.8rem;
+  margin-top: 4px;
 }

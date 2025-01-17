@@ -12,11 +12,10 @@
               placeholder="Enter email here..."
               formControlName="email"
             />
-          </div>
-
-          @if(isEmailInvalid()){
-            <p class="control-error">{{getEmailErrorMessage()}}</p>
+            @if(isEmailInvalid()){
+            <p class="control-error">{{ getEmailErrorMessage() }}</p>
             }
+          </div>
 
           <div class="flex-col">
             <label for="password">Password</label>
@@ -26,11 +25,10 @@
               placeholder="Enter password here..."
               formControlName="password"
             />
-          </div>
-
-          @if(isPasswordInvalid()){
-            <p class="control-error">Please enter valid password</p>
+            @if(isPasswordInvalid()){
+            <p class="control-error">{{ getPasswordErrorMessage() }}</p>
             }
+          </div>
 
           <button type="submit">Login</button>
         </div>
