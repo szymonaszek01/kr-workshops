@@ -9,7 +9,7 @@
             <input
               id="login"
               type="email"
-              placeholder="Enter email here..."
+              placeholder="Enter your email here..."
               formControlName="email"
             />
             @if(isEmailInvalid()){
@@ -18,15 +18,27 @@
           </div>
 
           <div class="flex-col">
-            <label for="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter password here..."
-              formControlName="password"
-            />
+            <div class="flex-col password-container">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="Enter your password here..."
+                formControlName="password"
+              />
+              <span
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="toggle-password"
+              >
+                {{ showPassword ? "🙈" : "👁️" }}
+                <!-- <i [class]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i> -->
+              </span>
+            </div>
             @if(isPasswordInvalid()){
-            <p class="control-error">{{ getPasswordErrorMessage() }}</p>
+            <p class="control-error">
+              {{ getPasswordErrorMessage() }}
+            </p>
             }
           </div>
 

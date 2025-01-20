@@ -27,6 +27,11 @@ export class AuthFormComponent {
       validators: [Validators.required, this.passwordValidator()],
     }),
   });
+  showPassword: boolean = false;
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   get password() {
     return this.loginForm.get('password');
@@ -88,7 +93,7 @@ export class AuthFormComponent {
 
     return errors['passwordInvalid']
       ? ''
-      : 'The password must contain at least one uppercase letter, one lowercase letter, one number, one special character and be at least 8 characters long.';
+      : 'The password must contain at least one uppercase letter, one lowercase letter, one number, one special character (ex. @, #, $) and be at least 8 characters long.';
   }
 
   // getPasswordErrorMessage(): string {

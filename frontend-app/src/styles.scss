@@ -146,4 +146,27 @@ input.ng-invalid.ng-touched {
   color: #f84e2c;
   font-size: 0.8rem;
   margin-top: 4px;
+  font-weight: 400;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-40%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
