@@ -1,7 +1,49 @@
-<div class="w-100 h-100 flex-center">
-  <div class="auth-form flex-col">
-    <h1>Login</h1>
-    <input id="login" />
-    <input id="password" />
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="w-100 h-100 flex-center">
+    <mat-card appearance="outlined" class="flex-col auth-form">
+      <mat-card-content>
+        <div class="flex-col gap-20">
+          <h1>Login</h1>
+          <div class="flex-col">
+            <label for="login">Email</label>
+            <input
+              id="login"
+              type="email"
+              placeholder="Enter your email here..."
+              formControlName="email"
+            />
+            @if(isEmailInvalid()){
+            <p class="control-error">{{ getEmailErrorMessage() }}</p>
+            }
+          </div>
+
+          <div class="flex-col">
+            <div class="flex-col password-container">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="Enter your password here..."
+                formControlName="password"
+              />
+              <span
+                type="button"
+                (click)="togglePasswordVisibility()"
+                class="toggle-password"
+              >
+                {{ showPassword ? "🙈" : "👁️" }}
+              </span>
+            </div>
+            @if(isPasswordInvalid()){
+            <p class="control-error">
+              {{ getPasswordErrorMessage() }}
+            </p>
+            }
+          </div>
+
+          <button type="submit">Login</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-</div>
+</form>
