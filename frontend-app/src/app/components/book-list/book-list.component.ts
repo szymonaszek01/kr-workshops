@@ -11,11 +11,12 @@ import { WarehouseDetail } from '../../models/warehouse-detail.model';
 import { Task } from '../../models/task.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
+import { DefaultValuePipe } from "../../pipes/default-value.pipe";
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [NgFor, MatCardModule],
+  imports: [NgFor, MatCardModule, DefaultValuePipe],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss',
 })
