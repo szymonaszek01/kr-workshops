@@ -1,17 +1,13 @@
 import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
-import { Book } from '../../models/book.model';
 import { MatCardModule } from '@angular/material/card';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { forkJoin, Observable } from 'rxjs';
-import { of, from } from 'rxjs';
-import { filter, map, tap, reduce, mergeMap } from 'rxjs/operators';
+import { forkJoin, Observable, Subject } from 'rxjs';
+import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import { WarehouseDetail } from '../../models/warehouse-detail.model';
-import { Task } from '../../models/task.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
-import { DefaultValuePipe } from "../../pipes/default-value.pipe";
 import { BookService } from '../../services/book/book.service';
+import { DefaultValuePipe } from '../../pipes/default-value.pipe';
 
 @Component({
   selector: 'app-book-list',
@@ -22,6 +18,7 @@ import { BookService } from '../../services/book/book.service';
 })
 export class BookListComponent {
   bookWareHouseDetails: BookWarehouseDetail[] = [];
+  private destroyed$: Subject<void> = new Subject();
 
   constructor(
     private bookService: BookService,
@@ -34,7 +31,8 @@ export class BookListComponent {
       .pipe(
         mergeMap((warehouseDetails: WarehouseDetail[]) => {
           return forkJoin(this.getBookWarehouseDetails(warehouseDetails));
-        })
+        }),
+        takeUntil(this.destroyed$)
       )
       .subscribe(
         (bookWareHouseDetails: BookWarehouseDetail[]) =>
@@ -46,22 +44,19 @@ export class BookListComponent {
     warehouseDetails: WarehouseDetail[]
   ): Observable<BookWarehouseDetail>[] {
     return warehouseDetails
-      .filter((detail) => detail.bookId) //bookId nie moze byc null, undefined ani pusty string  3 przypadki adresujemy , czyli wyfiltruj tylko te , które maja bookId
-      .map(
-        (
-          detail //  map z js
-        ) => {
-          return this.bookService.getOne(detail.bookId).pipe(
-            map((book) => ({
-              //map z RxJs
-              book,
-              warehouseDetail: detail,
-            }))
-          );
-        }
-      );
+      .filter((detail) => detail.bookId)
+      .map((detail) => {
+        return this.bookService.getOne(detail.bookId).pipe(
+          map((book) => ({
+            book,
+            warehouseDetail: detail,
+          }))
+        );
+      });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 }
-

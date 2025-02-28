@@ -5,15 +5,19 @@
         <div class="flex-col gap-20">
           <h1>Login</h1>
           <div class="flex-col">
-            <label for="login">Email</label>
+            <label for="login">Username</label>
             <input
               id="login"
-              type="email"
-              placeholder="Enter your email here..."
-              formControlName="email"
+              type="username"
+              placeholder="Enter your username here..."
+              formControlName="username"
             />
-            @if(isEmailInvalid()){
-            <p class="control-error">{{ getEmailErrorMessage() }}</p>
+            @if(isUsernameInvalid()){
+            <p class="control-error">
+              {{
+                loginForm.get("username") | requiredErrorMessage : "Username"
+              }}
+            </p>
             }
           </div>
 
@@ -36,7 +40,7 @@
             </div>
             @if(isPasswordInvalid()){
             <p class="control-error">
-              {{ getPasswordErrorMessage() }}
+              {{ loginForm.get("password") | passwordErrorMessage }}
             </p>
             }
           </div>

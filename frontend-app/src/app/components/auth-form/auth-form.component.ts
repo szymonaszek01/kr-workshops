@@ -1,54 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
-  AbstractControl,
-  ValidatorFn,
-  ValidationErrors,
 } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { passwordValidator } from '../../validators/auth.validators';
+import { AuthService } from '../../services/auth.service';
+import { PasswordErrorMessagePipe } from '../../pipes/password-error.pipe';
+import { RequiredErrorMessagePipe } from '../../pipes/required-error.pipe';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-auth-form',
   standalone: true,
-  imports: [MatCardModule, ReactiveFormsModule],
+  imports: [
+    MatCardModule,
+    ReactiveFormsModule,
+    PasswordErrorMessagePipe,
+    RequiredErrorMessagePipe,
+  ],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.scss',
 })
-export class AuthFormComponent {
+export class AuthFormComponent implements OnDestroy {
+  readonly passwordPattern: string =
+    '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$';
+  showPassword: boolean = false;
   loginForm = new FormGroup({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.email],
+    username: new FormControl('', {
+      validators: [Validators.required],
     }),
     password: new FormControl('', {
-      validators: [Validators.required, passwordValidator],
+      validators: [
+        Validators.required,
+        Validators.pattern(this.passwordPattern),
+      ],
     }),
   });
-  showPassword: boolean = false;
+
+  private destroy$: Subject<void> = new Subject();
+  constructor(private authService: AuthService) {}
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
-  isEmailInvalid(): boolean | undefined {
+  isUsernameInvalid(): boolean | undefined {
     return (
-      this.loginForm.get('email')?.invalid &&
-      this.loginForm.get('email')?.touched
+      this.loginForm.get('username')?.invalid &&
+      this.loginForm.get('username')?.touched
     );
-  }
-
-  getEmailErrorMessage(): string {
-    const errors = this.loginForm.get('email')?.errors;
-    if (!errors) {
-      return '';
-    }
-    return errors['required']
-      ? 'Email is required'
-      : 'Email has not a vaild structure';
   }
 
   isPasswordInvalid(): boolean | undefined {
@@ -58,26 +60,23 @@ export class AuthFormComponent {
     );
   }
 
-  getPasswordErrorMessage(): string {
-    const errors = this.loginForm.get('password')?.errors;
-    const passwordRequiredError =
-      this.loginForm.get('password')?.errors?.['required'];
+  onSubmit() {
+    const userName: string | null | undefined = this.loginForm.value.username;
+    const userPassword: string | null | undefined =
+      this.loginForm.value.password;
 
-    if (!errors) {
-      return '';
+    if (userName && userPassword && this.loginForm.valid) {
+      this.authService
+        .login({ username: userName, password: userPassword })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          console.log('Form has been sent');
+        });
     }
-
-    if (passwordRequiredError) {
-      return 'Password is required';
-    }
-
-    return errors['passwordInvalid']
-      ? 'The password must contain at least one uppercase letter, one lowercase letter, one number, one special character (ex. @, #, $) and be at least 8 characters long.'
-      : '';
   }
 
-  onSubmit() {
-    const userEmail = this.loginForm.value.email;
-    const userPassword = this.loginForm.value.password;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
