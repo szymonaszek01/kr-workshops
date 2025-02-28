@@ -9,7 +9,6 @@ describe('PasswordErrorMessagePipe', () => {
 
   it('create an instance', () => {
     const pipe = new PasswordErrorMessagePipe();
-
     expect(pipe).toBeTruthy();
   });
 

@@ -13,7 +13,11 @@
               formControlName="username"
             />
             @if(isUsernameInvalid()){
-            <p class="control-error">{{ getUsernameErrorMessage() }}</p>
+            <p class="control-error">
+              {{
+                loginForm.get("username") | requiredErrorMessage : "Username"
+              }}
+            </p>
             }
           </div>
 

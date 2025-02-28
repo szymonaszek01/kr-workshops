@@ -7,7 +7,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 })
 export class PasswordErrorMessagePipe implements PipeTransform {
   transform(control: AbstractControl | null): string {
-    console.log(control);
     if (!control?.errors) {
       return '';
     }
