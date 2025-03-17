@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth.service';
 import { PasswordErrorMessagePipe } from '../../pipes/password-error.pipe';
 import { RequiredErrorMessagePipe } from '../../pipes/required-error.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth-form',
@@ -40,7 +42,11 @@ export class AuthFormComponent implements OnDestroy {
   });
 
   private destroy$: Subject<void> = new Subject();
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
@@ -69,8 +75,14 @@ export class AuthFormComponent implements OnDestroy {
       this.authService
         .login({ username: userName, password: userPassword })
         .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          console.log('Form has been sent');
+        .subscribe({
+          next: (user) => {
+            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('userToken', user.token);
+            this.router.navigateByUrl('book-list');
+            this.toastr.success('User successfully logged in');
+          },
+          error: () => this.toastr.error('Invalid username or password'),
         });
     }
   }

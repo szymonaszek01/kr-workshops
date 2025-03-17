@@ -8,6 +8,8 @@ import { WarehouseDetailService } from '../../services/warehouse-detail.service'
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
 import { BookService } from '../../services/book/book.service';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
+import { routes } from '../../routes/routes';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -22,7 +24,8 @@ export class BookListComponent {
 
   constructor(
     private bookService: BookService,
-    private warehouseDetailService: WarehouseDetailService
+    private warehouseDetailService: WarehouseDetailService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -58,5 +61,10 @@ export class BookListComponent {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  logOut() {
+    localStorage.clear();
+    this.router.navigateByUrl('/');
   }
 }

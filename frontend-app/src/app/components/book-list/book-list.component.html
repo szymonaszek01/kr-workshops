@@ -1,5 +1,8 @@
 <div class="w-100 flex-col gap-20">
-  <h1>Books</h1>
+  <div class="w-100 flex-row space-between">
+    <h1>Books</h1>
+    <button type="button" (click)="logOut()">Log out</button>
+  </div>
   <mat-card
     *ngFor="let bookWareHouseDetail of bookWareHouseDetails"
     appearance="outlined"
