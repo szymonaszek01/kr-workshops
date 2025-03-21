@@ -8,8 +8,9 @@ import { WarehouseDetailService } from '../../services/warehouse-detail.service'
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
 import { BookService } from '../../services/book/book.service';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
-import { routes } from '../../routes/routes';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-book-list',
@@ -25,7 +26,8 @@ export class BookListComponent {
   constructor(
     private bookService: BookService,
     private warehouseDetailService: WarehouseDetailService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog // 1) We need to incject MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +45,28 @@ export class BookListComponent {
       );
   }
 
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  openConfirmationDialog(bookWareHouseDetail: BookWarehouseDetail): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+      data: {
+        bookId: bookWareHouseDetail.book._id,
+        bookTitle: bookWareHouseDetail.book.title,
+        warehouseDetailId: bookWareHouseDetail.warehouseDetail._id
+      }
+    };
+    this.dialog.open(ConfirmationDialogComponent, config); // 2) We need to create component (for example "ConfirmationDialogComponent") and pass it to method
+  }
+
+  logOut() {
+    localStorage.clear();
+    this.router.navigateByUrl('/');
+  }
+
   private getBookWarehouseDetails(
     warehouseDetails: WarehouseDetail[]
   ): Observable<BookWarehouseDetail>[] {
@@ -56,15 +80,5 @@ export class BookListComponent {
           }))
         );
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
-
-  logOut() {
-    localStorage.clear();
-    this.router.navigateByUrl('/');
   }
 }
