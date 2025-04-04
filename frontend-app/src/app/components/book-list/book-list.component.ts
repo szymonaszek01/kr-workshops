@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { AddBookConfirmationDialogComponent } from '../addBook-confirmation-dialog/addBook-confirmation-dialog.component';
 
 @Component({
   selector: 'app-book-list',
@@ -72,6 +73,19 @@ export class BookListComponent {
   logOut() {
     localStorage.clear();
     this.router.navigateByUrl('/');
+  }
+
+  openAddBookConfirmationDialog(): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+    };
+    this.dialog
+      .open(AddBookConfirmationDialogComponent, config)
+      .afterClosed()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (result) => console.log(result),
+      });
   }
 
   private init(): void {
