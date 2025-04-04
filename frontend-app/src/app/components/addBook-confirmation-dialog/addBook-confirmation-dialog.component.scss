@@ -1,7 +1,15 @@
-h1 {
-  margin: 20px 20px 0 20px;
+.mat-mdc-dialog-title {
+  font-weight: 500;
+  font-size: 20px;
 }
 
 .mat-mdc-dialog-content {
   overflow: hidden;
 }
+
+.dialog-container {
+  .flex-col + .flex-col {
+    margin-top: 20px;
+  }
+}
+

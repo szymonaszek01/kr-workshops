@@ -20,4 +20,16 @@ export class BookService {
       BookService.BOOK_URL + '/' + encodeURIComponent(id)
     );
   }
+
+  // TODO[1]: Create a method, that requests the creation of a book.
+  // 1.1 Create a new model "CreateBookReq".
+  // 1.2 The new model "CreateBookReq" should contain below propertis:
+  // * title
+  // * genre
+  // * author
+  // * quantity
+  // * price
+  // 1.3 Use HttpClient to create a POST request
+  // 1.4 The new model "CreateBookReq" should be sent in request body
+  // 1.5 Response from the backend contains newly created book id
 }
