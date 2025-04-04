@@ -21,6 +21,12 @@ export class BookService {
     );
   }
 
+  public deleteOne(id: string): Observable<string> {
+    return this.http.delete<string>(
+      BookService.BOOK_URL + '/' + encodeURIComponent(id)
+    );
+  }
+
   // TODO[1]: Create a method, that requests the creation of a book.
   // 1.1 Create a new model "CreateBookReq".
   // 1.2 The new model "CreateBookReq" should contain below propertis:

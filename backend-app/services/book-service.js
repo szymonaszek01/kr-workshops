@@ -26,6 +26,15 @@ const getBookById = async (id) => {
   return book;
 };
 
+const deleteBookById = async (id) => {
+  try {
+    const {deletedCount} = await Book.deleteOne( { _id: id } );
+    return deletedCount ? `Book (${id}) was deleted successfully` : `Book (${id}) not found`;
+ } catch (e) {
+    throw `Something went wrong: ${e}`;
+ }
+};
+
 const createBook = async (createBookReq) => {
   const newBookParams = {};
   for (const paramKey in createBookReq) {
@@ -63,5 +72,6 @@ const createBook = async (createBookReq) => {
 module.exports = {
   getAllBooks,
   getBookById,
+  deleteBookById
   createBook,
 };

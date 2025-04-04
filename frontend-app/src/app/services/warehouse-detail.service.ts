@@ -23,4 +23,10 @@ export class WarehouseDetailService {
       WarehouseDetailService.WAREHOUSE_DETAIL_URL + `/${encodeURIComponent(id)}`
     );
   }
+
+  public deleteOne(id: string): Observable<string> {
+    return this.http.delete<string>(
+      WarehouseDetailService.WAREHOUSE_DETAIL_URL + `/${encodeURIComponent(id)}`
+    );
+  }
 }
