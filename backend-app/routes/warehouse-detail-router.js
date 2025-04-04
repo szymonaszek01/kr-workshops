@@ -2,7 +2,7 @@ const express = require("express");
 const {
   getAllWarehouseDetails,
   getWarehouseDetailById,
-  deleteWarehouseDetailById
+  deleteWarehouseDetailById,
   createWarehouseDetail
 } = require("../services/warehouse-service");
 const { isValidJwt } = require("../middleware/auth.middleware");

@@ -59,6 +59,6 @@ const createWarehouseDetail = async (createWarehouseDetailReq) => {
 module.exports = {
   getAllWarehouseDetails,
   getWarehouseDetailById,
-  deleteWarehouseDetailById
+  deleteWarehouseDetailById,
   createWarehouseDetail,
 };

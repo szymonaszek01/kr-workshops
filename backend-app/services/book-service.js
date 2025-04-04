@@ -72,6 +72,6 @@ const createBook = async (createBookReq) => {
 module.exports = {
   getAllBooks,
   getBookById,
-  deleteBookById
+  deleteBookById,
   createBook,
 };

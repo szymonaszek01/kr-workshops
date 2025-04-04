@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddBookConfirmationDialogComponent } from '../addBook-confirmation-dialog/addBook-confirmation-dialog.component';
 
 @Component({
@@ -29,7 +28,6 @@ export class BookListComponent {
   constructor(
     private bookService: BookService,
     private warehouseDetailService: WarehouseDetailService,
-    private dialog: MatDialog,
     private router: Router,
     private toastr: ToastrService,
     private dialog: MatDialog // 1) We need to incject MatDialog
@@ -77,6 +75,19 @@ export class BookListComponent {
     this.router.navigateByUrl('/');
   }
 
+  openAddBookConfirmationDialog(): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+    };
+    this.dialog
+      .open(AddBookConfirmationDialogComponent, config)
+      .afterClosed()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (result) => console.log(result),
+      });
+  }
+
   private init(): void {
     this.warehouseDetailService
       .getAll()
@@ -104,29 +115,6 @@ export class BookListComponent {
             warehouseDetail: detail,
           }))
         );
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
-  }
-
-  logOut() {
-    localStorage.clear();
-    this.router.navigateByUrl('/');
-  }
-
-  openAddBookConfirmationDialog(): void {
-    const config: MatDialogConfig = {
-      width: '500px',
-    };
-    this.dialog
-      .open(AddBookConfirmationDialogComponent, config)
-      .afterClosed()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe({
-        next: (result) => console.log(result),
       });
   }
 }
