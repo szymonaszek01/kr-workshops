@@ -1,0 +1,58 @@
+<form [formGroup]="addBookForm" (ngSubmit)="onAddBook()">
+  <div class="dialog-container">
+    <h1 mat-dialog-title>Add book</h1>
+
+    <mat-dialog-content>
+      <div class="flex-col">
+        <label for="title">Book title</label>
+        <input
+          id="title"
+          type="title"
+          placeholder="Enter title"
+          formControlName="title"
+        />
+      </div>
+      <div class="flex-col">
+        <label for="author">Book author</label>
+        <input
+          id="author"
+          type="author"
+          placeholder="Enter author"
+          formControlName="author"
+        />
+      </div>
+      <div class="flex-col">
+        <label for="genre">Book genre</label>
+        <input
+          id="genre"
+          type="genre"
+          placeholder="Enter genre"
+          formControlName="genre"
+        />
+      </div>
+      <div class="flex-col">
+        <label for="quantity">Quantity</label>
+        <input
+          id="quantity"
+          type="quantity"
+          placeholder="Enter quantity"
+          formControlName="quantity"
+        />
+      </div>
+      <div class="flex-col">
+        <label for="genre">Price</label>
+        <input
+          id="price"
+          type="price"
+          placeholder="Enter price"
+          formControlName="price"
+        />
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="w-100 flex-row gap-5">
+      <button type="button" [mat-dialog-close]="null">Cancel</button>
+      <button type="submit">YES</button>
+    </mat-dialog-actions>
+  </div>
+</form>

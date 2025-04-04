@@ -10,6 +10,8 @@ import { BookService } from '../../services/book/book.service';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
 import { routes } from '../../routes/routes';
 import { Route, Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddBookConfirmationDialogComponent } from '../addBook-confirmation-dialog/addBook-confirmation-dialog.component';
 
 @Component({
   selector: 'app-book-list',
@@ -25,6 +27,7 @@ export class BookListComponent {
   constructor(
     private bookService: BookService,
     private warehouseDetailService: WarehouseDetailService,
+    private dialog: MatDialog,
     private router: Router
   ) {}
 
@@ -60,11 +63,24 @@ export class BookListComponent {
 
   ngOnDestroy(): void {
     this.destroyed$.next();
-    this.destroyed$.complete();
+    this.destroyed$.unsubscribe();
   }
 
   logOut() {
     localStorage.clear();
     this.router.navigateByUrl('/');
+  }
+
+  openAddBookConfirmationDialog(): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+    };
+    this.dialog
+      .open(AddBookConfirmationDialogComponent, config)
+      .afterClosed()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (result) => console.log(result),
+      });
   }
 }
