@@ -45,32 +45,27 @@ export class BookListComponent {
     const config: MatDialogConfig = {
       width: '500px',
       data: {
-        bookId: bookWareHouseDetail.book._id,
         bookTitle: bookWareHouseDetail.book.title,
-        warehouseDetailId: bookWareHouseDetail.warehouseDetail._id,
       },
     };
     this.dialog
       .open(ConfirmationDialogComponent, config)
       .afterClosed()
       .pipe(
-        filter((bookId) => !!bookId),
+        filter((result) => !!result),
+        mergeMap(() => forkJoin([
+          this.bookService.deleteOne(bookWareHouseDetail.book._id),
+          this.warehouseDetailService.deleteOne(bookWareHouseDetail.warehouseDetail._id),
+        ])),
         takeUntil(this.destroyed$)
       )
       .subscribe({
-        next: (bookId) => {
-          console.log(bookId);
-          this.bookService
-            .deleteOne(bookId)
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe({
-              next: (result) => {
-                this.toastr.info(result);
-                this.init();
-              },
-              error: () => this.toastr.error('Something went wrong. Try again later.'),
-            });
+        next: () => {
+          this.toastr.success(`Book (${bookWareHouseDetail.book._id})`);
+          this.init();
         },
+        error: () =>
+          this.toastr.error(`Something went wrong. Please, try again later`),
       }); // 2) We need to create component (for example "ConfirmationDialogComponent") and pass it to method
   }
 
