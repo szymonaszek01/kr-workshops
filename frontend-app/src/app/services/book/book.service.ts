@@ -20,4 +20,10 @@ export class BookService {
       BookService.BOOK_URL + '/' + encodeURIComponent(id)
     );
   }
+
+  public deleteOne(id: string): Observable<string> {
+    return this.http.delete<string>(
+      BookService.BOOK_URL + '/' + encodeURIComponent(id)
+    );
+  }
 }

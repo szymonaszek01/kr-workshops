@@ -2,14 +2,16 @@ import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { WarehouseDetail } from '../../models/warehouse-detail.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
 import { BookService } from '../../services/book/book.service';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
-import { routes } from '../../routes/routes';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-list',
@@ -25,10 +27,54 @@ export class BookListComponent {
   constructor(
     private bookService: BookService,
     private warehouseDetailService: WarehouseDetailService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private dialog: MatDialog // 1) We need to incject MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
+
+  openConfirmationDialog(bookWareHouseDetail: BookWarehouseDetail): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+      data: {
+        bookTitle: bookWareHouseDetail.book.title,
+      },
+    };
+    this.dialog
+      .open(ConfirmationDialogComponent, config)
+      .afterClosed()
+      .pipe(
+        filter((result) => !!result),
+        mergeMap(() => forkJoin([
+          this.bookService.deleteOne(bookWareHouseDetail.book._id),
+          this.warehouseDetailService.deleteOne(bookWareHouseDetail.warehouseDetail._id),
+        ])),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: () => {
+          this.toastr.success(`Book (${bookWareHouseDetail.book._id})`);
+          this.init();
+        },
+        error: () =>
+          this.toastr.error(`Something went wrong. Please, try again later`),
+      }); // 2) We need to create component (for example "ConfirmationDialogComponent") and pass it to method
+  }
+
+  logOut() {
+    localStorage.clear();
+    this.router.navigateByUrl('/');
+  }
+
+  private init(): void {
     this.warehouseDetailService
       .getAll()
       .pipe(
@@ -56,15 +102,5 @@ export class BookListComponent {
           }))
         );
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
-
-  logOut() {
-    localStorage.clear();
-    this.router.navigateByUrl('/');
   }
 }
