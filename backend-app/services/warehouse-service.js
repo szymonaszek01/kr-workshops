@@ -25,7 +25,17 @@ const getWarehouseDetailById = async (id) => {
   return warehouseDetail;
 };
 
+const deleteWarehouseDetailById = async (id) => {
+  try {
+    const {deletedCount} = await WarehouseDetail.deleteOne( { _id: id } );
+    return deletedCount ? `WarehouseDetail (${id}) was deleted successfully` : `WarehouseDetail (${id}) not found`;
+ } catch (e) {
+    throw `Something went wrong: ${e}`;
+ }
+};
+
 module.exports = {
   getAllWarehouseDetails,
   getWarehouseDetailById,
+  deleteWarehouseDetailById
 };

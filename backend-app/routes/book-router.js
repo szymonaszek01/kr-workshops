@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllBooks, getBookById } = require("../services/book-service");
+const { getAllBooks, getBookById, deleteBookById } = require("../services/book-service");
 const { isValidJwt } = require("../middleware/auth.middleware");
 
 const bookRouter = express.Router();
@@ -16,6 +16,13 @@ bookRouter.get("/books/:id", isValidJwt, async (req, res) => {
   await getBookById(id)
     .then((book) => res.json(book))
     .catch((error) => res.status(404).send({ error }));
+});
+
+bookRouter.delete("/books/:id", isValidJwt, async (req, res) => {
+  const id = req.params.id;
+  await deleteBookById(id)
+    .then((result) => res.json(result))
+    .catch((error) => res.status(400).send({ error }));
 });
 
 module.exports = bookRouter;
