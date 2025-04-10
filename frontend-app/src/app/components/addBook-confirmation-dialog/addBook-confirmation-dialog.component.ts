@@ -10,6 +10,7 @@ import {
   MatDialogActions,
   MatDialogContent,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
 
 @Component({
@@ -19,6 +20,7 @@ import {
     MatDialogContent,
     MatDialogActions,
     MatDialogModule,
+
     ReactiveFormsModule,
   ],
   templateUrl: './addBook-confirmation-dialog.component.html',
@@ -35,21 +37,29 @@ export class AddBookConfirmationDialogComponent {
     genre: new FormControl('', {
       validators: [Validators.required],
     }),
-    quantity: new FormControl('', {
-      validators: [Validators.required],
+    quantity: new FormControl(null, {
+      validators: [Validators.required, Validators.min(1)],
     }),
-    price: new FormControl('', {
-      validators: [Validators.required],
+    price: new FormControl(null, {
+      validators: [Validators.required, Validators.min(0.01)],
     }),
   });
 
-  constructor() {}
+  constructor(
+    private dialogRef: MatDialogRef<AddBookConfirmationDialogComponent>
+  ) {}
 
   onAddBook(): {} {
     const title: string | null | undefined = this.addBookForm.value.title;
     const author: string | null | undefined = this.addBookForm.value.author;
-    console.log(title);
-    console.log(author);
+    console.log(title, author);
+
+    if (this.addBookForm.valid) {
+      this.dialogRef.close('Form submitted and dialog closed');
+    } else {
+      this.addBookForm.markAllAsTouched();
+      console.log('Please enter empty fields');
+    }
     return {};
   }
 }
