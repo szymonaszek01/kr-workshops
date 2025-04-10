@@ -2,6 +2,8 @@ const express = require("express");
 const {
   getAllWarehouseDetails,
   getWarehouseDetailById,
+  deleteWarehouseDetailById,
+  createWarehouseDetail
 } = require("../services/warehouse-service");
 const { isValidJwt } = require("../middleware/auth.middleware");
 
@@ -18,6 +20,19 @@ warehouseDetailRouter.get("/warehouse-details/:id", isValidJwt, async (req, res)
   const id = req.params.id;
   await getWarehouseDetailById(id)
     .then((warehouseDetail) => res.json(warehouseDetail))
+    .catch((error) => res.status(404).send({ error }));
+});
+
+warehouseDetailRouter.delete("/warehouse-details/:id", isValidJwt, async (req, res) => {
+  const id = req.params.id;
+  await deleteWarehouseDetailById(id)
+    .then((result) => res.json(result))
+    .catch((error) => res.status(404).send({ error }));
+});
+
+warehouseDetailRouter.post("/warehouse-details", isValidJwt, async (req, res) => {
+  await createWarehouseDetail(req.body)
+    .then((warehouseDetailId) => res.json(warehouseDetailId))
     .catch((error) => res.status(404).send({ error }));
 });
 

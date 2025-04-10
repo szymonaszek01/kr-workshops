@@ -50,6 +50,13 @@ export class AddBookConfirmationDialogComponent {
   ) {}
 
   onAddBook(): {} {
+    // TODO[2]: Read documentation about mat dialog and pass the new model "CreateBookReq" as a result when the user closes a dialog.
+    // ** LINK to documentation https://material.angular.io/components/dialog/overview
+    // 2.1 Clean up method from console logs
+    // 2.2 Block creating and closing dialog when "addBookForm" is invalid
+    // 2.3 Create a new object "CreateBookReq" with values from "addBookForm"
+    // 2.4 Pass a new object as the result
+    // 2.5 You should see the result in the console
     const title: string | null | undefined = this.addBookForm.value.title;
     const author: string | null | undefined = this.addBookForm.value.author;
     console.log(title, author);
