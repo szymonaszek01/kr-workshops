@@ -12,6 +12,7 @@ import {
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
+import { CreateBookReq } from '../../models/createBookReq.model';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -37,10 +38,10 @@ export class AddBookConfirmationDialogComponent {
     genre: new FormControl('', {
       validators: [Validators.required],
     }),
-    quantity: new FormControl(null, {
+    quantity: new FormControl(0, {
       validators: [Validators.required, Validators.min(1)],
     }),
-    price: new FormControl(null, {
+    price: new FormControl(0, {
       validators: [Validators.required, Validators.min(0.01)],
     }),
   });
@@ -57,14 +58,17 @@ export class AddBookConfirmationDialogComponent {
     // 2.3 Create a new object "CreateBookReq" with values from "addBookForm"
     // 2.4 Pass a new object as the result
     // 2.5 You should see the result in the console
-    const title: string | null | undefined = this.addBookForm.value.title;
-    const author: string | null | undefined = this.addBookForm.value.author;
-    console.log(title, author);
 
     if (this.addBookForm.valid) {
-      this.dialogRef.close('Form submitted and dialog closed');
+      const newBook: CreateBookReq = {
+        title: this.addBookForm.value.title ?? '',
+        genre: this.addBookForm.value.genre ?? '',
+        author: this.addBookForm.value.author ?? '',
+        quantity: this.addBookForm.value.quantity ?? 0,
+        price: this.addBookForm.value.price ?? 0,
+      };
+      this.dialogRef.close(newBook);
     } else {
-      this.addBookForm.markAllAsTouched();
       console.log('Please enter empty fields');
     }
     return {};

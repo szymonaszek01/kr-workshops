@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../../models/book.model';
+import { CreateBookReq } from '../../models/createBookReq.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,15 +28,7 @@ export class BookService {
     );
   }
 
-  // TODO[1]: Create a method, that requests the creation of a book.
-  // 1.1 Create a new model "CreateBookReq".
-  // 1.2 The new model "CreateBookReq" should contain below propertis:
-  // * title
-  // * genre
-  // * author
-  // * quantity
-  // * price
-  // 1.3 Use HttpClient to create a POST request
-  // 1.4 The new model "CreateBookReq" should be sent in request body
-  // 1.5 Response from the backend contains newly created book id
+  public createBook(newBook: CreateBookReq): Observable<string> {
+    return this.http.post<string>(BookService.BOOK_URL, newBook);
+  }
 }
