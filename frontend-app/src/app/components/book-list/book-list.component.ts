@@ -2,7 +2,7 @@ import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 import { WarehouseDetail } from '../../models/warehouse-detail.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { AddBookConfirmationDialogComponent } from '../addBook-confirmation-dialog/addBook-confirmation-dialog.component';
+import { CreateBookReq } from '../../models/createBookReq.model';
 
 @Component({
   selector: 'app-book-list',
@@ -53,10 +55,14 @@ export class BookListComponent {
       .afterClosed()
       .pipe(
         filter((result) => !!result),
-        mergeMap(() => forkJoin([
-          this.bookService.deleteOne(bookWareHouseDetail.book._id),
-          this.warehouseDetailService.deleteOne(bookWareHouseDetail.warehouseDetail._id),
-        ])),
+        mergeMap(() =>
+          forkJoin([
+            this.bookService.deleteOne(bookWareHouseDetail.book._id),
+            this.warehouseDetailService.deleteOne(
+              bookWareHouseDetail.warehouseDetail._id
+            ),
+          ])
+        ),
         takeUntil(this.destroyed$)
       )
       .subscribe({
@@ -72,6 +78,30 @@ export class BookListComponent {
   logOut() {
     localStorage.clear();
     this.router.navigateByUrl('/');
+  }
+
+  openAddBookConfirmationDialog(): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+    };
+    this.dialog
+      .open(AddBookConfirmationDialogComponent, config)
+      .afterClosed()
+      .pipe(
+        filter((result: CreateBookReq | null) => !!result),
+        switchMap((result: CreateBookReq) =>
+          this.bookService.createBook(result)
+        ),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: (newBookId) => {
+          this.toastr.success(`Book (${newBookId}) has been created`);
+          this.init();
+        },
+        error: () =>
+          this.toastr.error(`Something went wrong. Please, try again later`),
+      });
   }
 
   private init(): void {
