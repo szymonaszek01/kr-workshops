@@ -13,6 +13,5 @@ import {
   styleUrl: './confirmation-dialog.component.scss',
 })
 export class ConfirmationDialogComponent {
-  // 3) Use MAT_DIALOG_DATA to pass some properties
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { bookTitle: string }) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string, description: string }) {}
 }

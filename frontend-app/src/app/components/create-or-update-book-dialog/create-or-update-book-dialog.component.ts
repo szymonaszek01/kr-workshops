@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogContent,
   MatDialogModule,
@@ -24,10 +23,10 @@ import { CreateBookReq } from '../../models/createBookReq.model';
 
     ReactiveFormsModule,
   ],
-  templateUrl: './addBook-confirmation-dialog.component.html',
-  styleUrl: './addBook-confirmation-dialog.component.scss',
+  templateUrl: './create-or-update-book-dialog.component.html',
+  styleUrl: './create-or-update-book-dialog.component.scss',
 })
-export class AddBookConfirmationDialogComponent {
+export class CreateOrUpdateBookDialogComponent {
   addBookForm = new FormGroup({
     title: new FormControl('', {
       validators: [Validators.required],
@@ -47,18 +46,10 @@ export class AddBookConfirmationDialogComponent {
   });
 
   constructor(
-    private dialogRef: MatDialogRef<AddBookConfirmationDialogComponent>
+    private dialogRef: MatDialogRef<CreateOrUpdateBookDialogComponent>
   ) {}
 
-  onAddBook(): {} {
-    // TODO[2]: Read documentation about mat dialog and pass the new model "CreateBookReq" as a result when the user closes a dialog.
-    // ** LINK to documentation https://material.angular.io/components/dialog/overview
-    // 2.1 Clean up method from console logs
-    // 2.2 Block creating and closing dialog when "addBookForm" is invalid
-    // 2.3 Create a new object "CreateBookReq" with values from "addBookForm"
-    // 2.4 Pass a new object as the result
-    // 2.5 You should see the result in the console
-
+  onAddBook(): void {
     if (this.addBookForm.valid) {
       const newBook: CreateBookReq = {
         title: this.addBookForm.value.title ?? '',
@@ -68,9 +59,6 @@ export class AddBookConfirmationDialogComponent {
         price: this.addBookForm.value.price ?? 0,
       };
       this.dialogRef.close(newBook);
-    } else {
-      console.log('Please enter empty fields');
     }
-    return {};
   }
 }

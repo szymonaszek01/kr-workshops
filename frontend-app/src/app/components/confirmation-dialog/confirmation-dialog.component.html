@@ -1,8 +1,8 @@
 <div class="dialog-container">
-    <h1 mat-dialog-title>Confirm action</h1>
+    <h1 mat-dialog-title>{{data.title}}</h1>
 
     <mat-dialog-content>
-        <p>Do you want to delete this book "{{data.bookTitle}}"?</p>
+        <p>{{data.description}}</p>
     </mat-dialog-content>
 
     <mat-dialog-actions class="w-100 flex-row gap-5">

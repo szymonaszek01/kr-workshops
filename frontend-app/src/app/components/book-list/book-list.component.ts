@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
-import { AddBookConfirmationDialogComponent } from '../addBook-confirmation-dialog/addBook-confirmation-dialog.component';
+import { CreateOrUpdateBookDialogComponent } from '../create-or-update-book-dialog/create-or-update-book-dialog.component';
 import { CreateBookReq } from '../../models/createBookReq.model';
 
 @Component({
@@ -31,7 +31,7 @@ export class BookListComponent {
     private warehouseDetailService: WarehouseDetailService,
     private router: Router,
     private toastr: ToastrService,
-    private dialog: MatDialog // 1) We need to incject MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +47,8 @@ export class BookListComponent {
     const config: MatDialogConfig = {
       width: '500px',
       data: {
-        bookTitle: bookWareHouseDetail.book.title,
+        title: 'Confirm delete action',
+        description: `Do you want to delete this book \"${bookWareHouseDetail.book.title}\"?`
       },
     };
     this.dialog
@@ -72,7 +73,7 @@ export class BookListComponent {
         },
         error: () =>
           this.toastr.error(`Something went wrong. Please, try again later`),
-      }); // 2) We need to create component (for example "ConfirmationDialogComponent") and pass it to method
+      });
   }
 
   logOut() {
@@ -85,7 +86,7 @@ export class BookListComponent {
       width: '500px',
     };
     this.dialog
-      .open(AddBookConfirmationDialogComponent, config)
+      .open(CreateOrUpdateBookDialogComponent, config)
       .afterClosed()
       .pipe(
         filter((result: CreateBookReq | null) => !!result),
