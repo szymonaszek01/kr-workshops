@@ -1,6 +1,6 @@
 <form [formGroup]="addBookForm" (ngSubmit)="onAddBook()">
   <div class="dialog-container">
-    <h1 mat-dialog-title>Add book</h1>
+    <h1 mat-dialog-title>{{ isUpdated ? "Edit book" : "Add book" }}</h1>
 
     <mat-dialog-content>
       <div class="flex-col">
@@ -52,7 +52,9 @@
 
     <mat-dialog-actions class="w-100 flex-row gap-5">
       <button type="button" [mat-dialog-close]="null">Cancel</button>
-      <button type="submit" [disabled]="!addBookForm.valid">Create</button>
+      <button type="submit" [disabled]="!addBookForm.valid">
+        {{ isUpdated ? "Edit" : "Create" }}
+      </button>
     </mat-dialog-actions>
   </div>
 </form>

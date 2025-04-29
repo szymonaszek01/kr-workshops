@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -6,12 +6,15 @@ import {
   Validators,
 } from '@angular/forms';
 import {
+  MAT_DIALOG_DATA,
   MatDialogActions,
   MatDialogContent,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { CreateBookReq } from '../../models/createBookReq.model';
+import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
+import { EditBookReq } from '../../models/editBookReq.model';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -26,7 +29,8 @@ import { CreateBookReq } from '../../models/createBookReq.model';
   templateUrl: './create-or-update-book-dialog.component.html',
   styleUrl: './create-or-update-book-dialog.component.scss',
 })
-export class CreateOrUpdateBookDialogComponent {
+export class CreateOrUpdateBookDialogComponent implements OnInit {
+  isUpdated: boolean = false;
   addBookForm = new FormGroup({
     title: new FormControl('', {
       validators: [Validators.required],
@@ -46,8 +50,38 @@ export class CreateOrUpdateBookDialogComponent {
   });
 
   constructor(
-    private dialogRef: MatDialogRef<CreateOrUpdateBookDialogComponent>
-  ) {}
+    private dialogRef: MatDialogRef<CreateOrUpdateBookDialogComponent>,
+    @Inject(MAT_DIALOG_DATA)
+    public data: { bookWarehouseDetail: BookWarehouseDetail }
+  ) {
+    this.isUpdated =
+      data?.bookWarehouseDetail?.book?._id &&
+      data?.bookWarehouseDetail?.warehouseDetail?._id
+        ? true
+        : false;
+
+    console.log(data);
+  }
+
+  ngOnInit(): void {
+    if (this.isUpdated) {
+      this.addBookForm
+        .get('title')
+        ?.setValue(this.data.bookWarehouseDetail.book.title);
+      this.addBookForm
+        .get('author')
+        ?.setValue(this.data.bookWarehouseDetail.book.author);
+      this.addBookForm
+        .get('genre')
+        ?.setValue(this.data.bookWarehouseDetail.book.genre);
+      this.addBookForm
+        .get('quantity')
+        ?.setValue(this.data.bookWarehouseDetail.warehouseDetail.quantity);
+      this.addBookForm
+        .get('price')
+        ?.setValue(this.data.bookWarehouseDetail.warehouseDetail.price);
+    }
+  }
 
   onAddBook(): void {
     if (this.addBookForm.valid) {
@@ -58,7 +92,15 @@ export class CreateOrUpdateBookDialogComponent {
         quantity: this.addBookForm.value.quantity ?? 0,
         price: this.addBookForm.value.price ?? 0,
       };
-      this.dialogRef.close(newBook);
+
+      this.dialogRef.close(
+        this.isUpdated
+          ? {
+              ...newBook,
+              id: this.data.bookWarehouseDetail.book._id,
+            }
+          : newBook
+      );
     }
   }
 }

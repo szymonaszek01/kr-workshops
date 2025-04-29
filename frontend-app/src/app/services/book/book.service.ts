@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../../models/book.model';
 import { CreateBookReq } from '../../models/createBookReq.model';
+import { EditBookReq } from '../../models/editBookReq.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +31,9 @@ export class BookService {
 
   public createBook(newBook: CreateBookReq): Observable<string> {
     return this.http.post<string>(BookService.BOOK_URL, newBook);
+  }
+
+  public updateBook(editedBook: EditBookReq): Observable<string> {
+    return this.http.put<string>(BookService.BOOK_URL, editedBook);
   }
 }

@@ -2,7 +2,14 @@ import { NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  mergeMap,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { WarehouseDetail } from '../../models/warehouse-detail.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
@@ -14,6 +21,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { ToastrService } from 'ngx-toastr';
 import { CreateOrUpdateBookDialogComponent } from '../create-or-update-book-dialog/create-or-update-book-dialog.component';
 import { CreateBookReq } from '../../models/createBookReq.model';
+import { EditBookReq } from '../../models/editBookReq.model';
 
 @Component({
   selector: 'app-book-list',
@@ -48,7 +56,7 @@ export class BookListComponent {
       width: '500px',
       data: {
         title: 'Confirm delete action',
-        description: `Do you want to delete this book \"${bookWareHouseDetail.book.title}\"?`
+        description: `Do you want to delete this book \"${bookWareHouseDetail.book.title}\"?`,
       },
     };
     this.dialog
@@ -90,6 +98,7 @@ export class BookListComponent {
       .afterClosed()
       .pipe(
         filter((result: CreateBookReq | null) => !!result),
+        tap((result: CreateBookReq) => console.log(result)),
         switchMap((result: CreateBookReq) =>
           this.bookService.createBook(result)
         ),
@@ -98,6 +107,32 @@ export class BookListComponent {
       .subscribe({
         next: (newBookId) => {
           this.toastr.success(`Book (${newBookId}) has been created`);
+          this.init();
+        },
+        error: () =>
+          this.toastr.error(`Something went wrong. Please, try again later`),
+      });
+  }
+
+  openEditBookConfirmationDialog(
+    bookWarehouseDetail: BookWarehouseDetail
+  ): void {
+    const config: MatDialogConfig = {
+      width: '500px',
+      data: { bookWarehouseDetail },
+    };
+    this.dialog
+      .open(CreateOrUpdateBookDialogComponent, config)
+      .afterClosed()
+      .pipe(
+        filter((result: EditBookReq | null) => !!result),
+        tap((result: EditBookReq) => console.log(result)),
+        switchMap((result: EditBookReq) => this.bookService.updateBook(result)),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe({
+        next: (newBookId) => {
+          this.toastr.success(`Book (${newBookId}) has been updated`);
           this.init();
         },
         error: () =>
