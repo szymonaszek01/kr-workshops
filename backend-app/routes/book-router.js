@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllBooks, getBookById, deleteBookById, createBook } = require("../services/book-service");
+const { getAllBooks, getBookById, deleteBookById, createBook, updateBook } = require("../services/book-service");
 const { isValidJwt } = require("../middleware/auth.middleware");
 
 const bookRouter = express.Router();
@@ -28,6 +28,12 @@ bookRouter.delete("/books/:id", isValidJwt, async (req, res) => {
 bookRouter.post("/books", isValidJwt, async (req, res) => {
   await createBook(req.body)
     .then((bookId) => res.json(bookId))
+    .catch((error) => res.status(404).send({ error }));
+});
+
+bookRouter.put("/books", isValidJwt, async (req, res) => {
+  await updateBook(req.body)
+    .then((book) => res.json(book))
     .catch((error) => res.status(404).send({ error }));
 });
 

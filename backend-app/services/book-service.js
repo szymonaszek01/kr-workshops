@@ -69,9 +69,30 @@ const createBook = async (createBookReq) => {
   }
 };
 
+const updateBook = async (updateBookReq) => {
+  const updateBookParams = {};
+  for (const paramKey in updateBookReq) {
+    if (allowedParamKeys.includes(paramKey)) {
+      if (!updateBookReq[paramKey]) {
+        throw `${paramKey} can not be null or empty`;
+      }
+      updateBookParams[paramKey] = updateBookReq[paramKey];
+    }
+  }
+
+  const book = await Book.findById(updateBookReq.id);
+  if (!book) {
+    throw `Book (${id}) not found`;
+  }
+  delete updateBookParams._id;
+
+  return updateBookReq.id
+};
+
 module.exports = {
   getAllBooks,
   getBookById,
   deleteBookById,
   createBook,
+  updateBook
 };
