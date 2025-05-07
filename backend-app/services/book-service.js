@@ -1,5 +1,8 @@
 const Book = require("../models/book");
-const { createWarehouseDetail } = require("../services/warehouse-service");
+const {
+  updateWarehouseDetailByBookId,
+  createWarehouseDetail,
+} = require("../services/warehouse-service");
 
 const allowedParamKeys = ["title", "author", "genre"];
 
@@ -26,13 +29,28 @@ const getBookById = async (id) => {
   return book;
 };
 
-const deleteBookById = async (id) => {
+const updateBookById = async (_id, updateBookReq) => {
+  const updateBookParams = {};
+  for (const paramKey in updateBookReq) {
+    if (allowedParamKeys.includes(paramKey)) {
+      if (!updateBookReq[paramKey]) {
+        throw `${paramKey} can not be null or empty`;
+      }
+      updateBookParams[paramKey] = updateBookReq[paramKey];
+    }
+  }
+
   try {
-    const {deletedCount} = await Book.deleteOne( { _id: id } );
-    return deletedCount ? `Book (${id}) was deleted successfully` : `Book (${id}) not found`;
- } catch (e) {
+    const updatedBook = await Book.updateOne(
+      { _id },
+      { $set: updateBookParams }
+    );
+    await updateWarehouseDetailByBookId(_id, updateBookReq);
+    console.log(`Book (${updatedBook}) has been updated`);
+    return _id;
+  } catch (e) {
     throw `Something went wrong: ${e}`;
- }
+  }
 };
 
 const createBook = async (createBookReq) => {
@@ -69,30 +87,21 @@ const createBook = async (createBookReq) => {
   }
 };
 
-const updateBook = async (updateBookReq) => {
-  const updateBookParams = {};
-  for (const paramKey in updateBookReq) {
-    if (allowedParamKeys.includes(paramKey)) {
-      if (!updateBookReq[paramKey]) {
-        throw `${paramKey} can not be null or empty`;
-      }
-      updateBookParams[paramKey] = updateBookReq[paramKey];
-    }
+const deleteBookById = async (id) => {
+  try {
+    const { deletedCount } = await Book.deleteOne({ _id: id });
+    return deletedCount
+      ? `Book (${id}) was deleted successfully`
+      : `Book (${id}) not found`;
+  } catch (e) {
+    throw `Something went wrong: ${e}`;
   }
-
-  const book = await Book.findById(updateBookReq.id);
-  if (!book) {
-    throw `Book (${id}) not found`;
-  }
-  delete updateBookParams._id;
-
-  return updateBookReq.id
 };
 
 module.exports = {
   getAllBooks,
   getBookById,
-  deleteBookById,
+  updateBookById,
   createBook,
-  updateBook
+  deleteBookById,
 };
