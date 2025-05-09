@@ -25,7 +25,7 @@ const getWarehouseDetailById = async (id) => {
   return warehouseDetail;
 };
 
-const updateWarehouseDetailByBookId = async (bookId, updateWarehouseDetailReq) => {
+const updateWarehouseDetailById = async (_id, updateWarehouseDetailReq) => {
   const updateWarehouseDetailParams = {};
   for (const paramKey in updateWarehouseDetailReq) {
     if (allowedParamKeys.includes(paramKey)) {
@@ -39,11 +39,11 @@ const updateWarehouseDetailByBookId = async (bookId, updateWarehouseDetailReq) =
 
   try {
     const updatedWarehouseDetail = await WarehouseDetail.updateOne(
-      { bookId },
+      { _id },
       { $set: updateWarehouseDetailParams }
     );
     console.log(`WarehouseDetail (${updatedWarehouseDetail}) has been updated`);
-    return bookId;
+    return _id;
   } catch (e) {
     throw `Something went wrong: ${e}`;
   }
@@ -85,7 +85,7 @@ const deleteWarehouseDetailById = async (id) => {
 module.exports = {
   getAllWarehouseDetails,
   getWarehouseDetailById,
-  updateWarehouseDetailByBookId,
+  updateWarehouseDetailById,
   createWarehouseDetail,
   deleteWarehouseDetailById,
 };

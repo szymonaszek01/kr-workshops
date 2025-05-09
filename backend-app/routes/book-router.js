@@ -27,7 +27,7 @@ bookRouter.get("/books/:id", isValidJwt, async (req, res) => {
 bookRouter.put("/books", isValidJwt, async (req, res) => {
   const id = req.body.id;
   await updateBookById(id, req.body)
-    .then((book) => res.json(book))
+    .then((bookId) => res.json(bookId))
     .catch((error) => res.status(404).send({ error }));
 });
 

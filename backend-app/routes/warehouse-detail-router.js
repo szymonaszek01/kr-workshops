@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAllWarehouseDetails,
   getWarehouseDetailById,
+  updateWarehouseDetailById,
   createWarehouseDetail,
   deleteWarehouseDetailById
 } = require("../services/warehouse-service");
@@ -20,6 +21,13 @@ warehouseDetailRouter.get("/warehouse-details/:id", isValidJwt, async (req, res)
   const id = req.params.id;
   await getWarehouseDetailById(id)
     .then((warehouseDetail) => res.json(warehouseDetail))
+    .catch((error) => res.status(404).send({ error }));
+});
+
+warehouseDetailRouter.put("/warehouse-details", isValidJwt, async (req, res) => {
+  const id = req.body.id;
+  await updateWarehouseDetailById(id, req.body)
+    .then((warehouseDetailId) => res.json(warehouseDetailId))
     .catch((error) => res.status(404).send({ error }));
 });
 

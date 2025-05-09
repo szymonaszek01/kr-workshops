@@ -1,6 +1,6 @@
 const Book = require("../models/book");
 const {
-  updateWarehouseDetailByBookId,
+  updateWarehouseDetailById,
   createWarehouseDetail,
 } = require("../services/warehouse-service");
 
@@ -45,7 +45,7 @@ const updateBookById = async (_id, updateBookReq) => {
       { _id },
       { $set: updateBookParams }
     );
-    await updateWarehouseDetailByBookId(_id, updateBookReq);
+    await updateWarehouseDetailById(updateBookReq.warehouseDetailId, updateBookReq);
     console.log(`Book (${updatedBook}) has been updated`);
     return _id;
   } catch (e) {

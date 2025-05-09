@@ -98,6 +98,7 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
           ? {
               ...newBook,
               id: this.data.bookWarehouseDetail.book._id,
+              warehouseDetailId: this.data.bookWarehouseDetail.warehouseDetail._id
             }
           : newBook
       );
