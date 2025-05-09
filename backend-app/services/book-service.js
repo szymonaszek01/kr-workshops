@@ -77,8 +77,7 @@ const createBook = async (createBookReq) => {
     const newBook = await Book.create(newBookParams);
     await createWarehouseDetail({
       ...createBookReq,
-      bookId: newBook.id,
-      currency: "EUR",
+      bookId: newBook.id
     });
     console.log(`Book (${newBook}) has been created`);
     return newBook.id;
