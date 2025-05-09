@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -14,7 +15,9 @@ import {
 } from '@angular/material/dialog';
 import { CreateBookReq } from '../../models/createBookReq.model';
 import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
-import { EditBookReq } from '../../models/editBookReq.model';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CURRENCY_LIST } from '../../const/app.const';
 
 @Component({
   selector: 'app-confirmation-dialog',
@@ -23,7 +26,10 @@ import { EditBookReq } from '../../models/editBookReq.model';
     MatDialogContent,
     MatDialogActions,
     MatDialogModule,
-
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
     ReactiveFormsModule,
   ],
   templateUrl: './create-or-update-book-dialog.component.html',
@@ -47,7 +53,9 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
     price: new FormControl(0, {
       validators: [Validators.required, Validators.min(0.01)],
     }),
+    currency: new FormControl('', { validators: [Validators.required] }),
   });
+  readonly CURRENCY_LIST: string[] = CURRENCY_LIST;
 
   constructor(
     private dialogRef: MatDialogRef<CreateOrUpdateBookDialogComponent>,
@@ -80,7 +88,14 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
       this.addBookForm
         .get('price')
         ?.setValue(this.data.bookWarehouseDetail.warehouseDetail.price);
+      this.addBookForm
+        .get('currency')
+        ?.setValue(this.data.bookWarehouseDetail.warehouseDetail.currency);
     }
+
+    // if (!this.data.bookWarehouseDetail.warehouseDetail.currency) {
+    //   this.addBookForm.get('currency')?.markAsTouched();
+    // }
   }
 
   onAddBook(): void {
@@ -98,7 +113,8 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
           ? {
               ...newBook,
               id: this.data.bookWarehouseDetail.book._id,
-              warehouseDetailId: this.data.bookWarehouseDetail.warehouseDetail._id
+              warehouseDetailId:
+                this.data.bookWarehouseDetail.warehouseDetail._id,
             }
           : newBook
       );

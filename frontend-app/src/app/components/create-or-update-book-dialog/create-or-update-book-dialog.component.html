@@ -48,6 +48,21 @@
           formControlName="price"
         />
       </div>
+
+      <div class="flex-col">
+        <mat-form-field>
+          <mat-label>Currency</mat-label>
+          <mat-select
+            formControlName="currency"
+            placeholder="Select currency"
+            single
+          >
+            @for (currencyValue of CURRENCY_LIST; track currencyValue) {
+            <mat-option [value]="currencyValue">{{ currencyValue }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
     </mat-dialog-content>
 
     <mat-dialog-actions class="w-100 flex-row gap-5">

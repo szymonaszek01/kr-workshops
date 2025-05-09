@@ -4,4 +4,5 @@ export interface CreateBookReq {
   author: string;
   quantity: number;
   price: number;
+  currency: string;
 }
