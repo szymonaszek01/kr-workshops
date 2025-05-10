@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../../models/book.model';
+import { CreateBookReq } from '../../models/createBookReq.model';
+import { EditBookReq } from '../../models/editBookReq.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +27,13 @@ export class BookService {
     return this.http.delete<string>(
       BookService.BOOK_URL + '/' + encodeURIComponent(id)
     );
+  }
+
+  public createBook(newBook: CreateBookReq): Observable<string> {
+    return this.http.post<string>(BookService.BOOK_URL, newBook);
+  }
+
+  public updateBook(editedBook: EditBookReq): Observable<string> {
+    return this.http.put<string>(BookService.BOOK_URL, editedBook);
   }
 }
