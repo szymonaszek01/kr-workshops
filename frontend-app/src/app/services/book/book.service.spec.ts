@@ -48,7 +48,7 @@ describe('BookService', () => {
       },
     ];
 
-    service.getAll().subscribe((books) => {
+    service.getBooks().subscribe((books) => {
       expect(books.length).toBe(2);
       expect(books).toEqual(mockBooks);
     });
@@ -67,7 +67,7 @@ describe('BookService', () => {
     };
     const bookId = '1';
 
-    service.getOne(bookId).subscribe((book) => {
+    service.getBook(bookId).subscribe((book) => {
       expect(book).toEqual(mockBook);
     });
 

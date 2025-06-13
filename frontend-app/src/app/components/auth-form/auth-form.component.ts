@@ -12,6 +12,7 @@ import { RequiredErrorMessagePipe } from '../../pipes/required-error.pipe';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-auth-form',
@@ -40,8 +41,8 @@ export class AuthFormComponent implements OnDestroy {
       ],
     }),
   });
-
   private destroy$: Subject<void> = new Subject();
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -77,9 +78,7 @@ export class AuthFormComponent implements OnDestroy {
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (user) => {
-            localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('userToken', user.token);
-            localStorage.setItem('refreshToken', user.refreshToken);
+            this.saveUserInLocalStorage(user);
             this.router.navigateByUrl('book-list');
             this.toastr.success('User successfully logged in');
           },
@@ -90,6 +89,12 @@ export class AuthFormComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
-    this.destroy$.complete();
+    this.destroy$.unsubscribe();
+  }
+
+  private saveUserInLocalStorage(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('userToken', user.token);
+    localStorage.setItem('refreshToken', user.refreshToken);
   }
 }

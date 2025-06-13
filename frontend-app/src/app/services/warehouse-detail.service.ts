@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WarehouseDetail } from '../models/warehouse-detail.model';
+import { WarehouseDetail } from '../models/warehouseDetail.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,19 +12,19 @@ export class WarehouseDetailService {
 
   constructor(private http: HttpClient) {}
 
-  public getAll(): Observable<WarehouseDetail[]> {
+  public getWarehouseDetails(): Observable<WarehouseDetail[]> {
     return this.http.get<WarehouseDetail[]>(
       WarehouseDetailService.WAREHOUSE_DETAIL_URL
     );
   }
 
-  public getOne(id: string): Observable<WarehouseDetail> {
+  public getWarehouseDetail(id: string): Observable<WarehouseDetail> {
     return this.http.get<WarehouseDetail>(
       WarehouseDetailService.WAREHOUSE_DETAIL_URL + `/${encodeURIComponent(id)}`
     );
   }
 
-  public deleteOne(id: string): Observable<string> {
+  public deleteWarehouseDetail(id: string): Observable<string> {
     return this.http.delete<string>(
       WarehouseDetailService.WAREHOUSE_DETAIL_URL + `/${encodeURIComponent(id)}`
     );

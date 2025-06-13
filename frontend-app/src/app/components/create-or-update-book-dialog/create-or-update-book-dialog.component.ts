@@ -14,7 +14,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { CreateBookReq } from '../../models/createBookReq.model';
-import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
+import { BookWarehouseDetail } from '../../models/bookWarehouseDetail.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CURRENCY_LIST } from '../../const/app.const';

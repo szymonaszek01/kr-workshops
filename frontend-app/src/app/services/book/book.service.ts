@@ -13,17 +13,17 @@ export class BookService {
 
   constructor(private http: HttpClient) {}
 
-  public getAll(): Observable<Book[]> {
+  public getBooks(): Observable<Book[]> {
     return this.http.get<Book[]>(BookService.BOOK_URL);
   }
 
-  public getOne(id: string): Observable<Book> {
+  public getBook(id: string): Observable<Book> {
     return this.http.get<Book>(
       BookService.BOOK_URL + '/' + encodeURIComponent(id)
     );
   }
 
-  public deleteOne(id: string): Observable<string> {
+  public deleteBook(id: string): Observable<string> {
     return this.http.delete<string>(
       BookService.BOOK_URL + '/' + encodeURIComponent(id)
     );

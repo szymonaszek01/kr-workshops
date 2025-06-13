@@ -10,9 +10,9 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { WarehouseDetail } from '../../models/warehouse-detail.model';
+import { WarehouseDetail } from '../../models/warehouseDetail.model';
 import { WarehouseDetailService } from '../../services/warehouse-detail.service';
-import { BookWarehouseDetail } from '../../models/book-warehouse-detail.model';
+import { BookWarehouseDetail } from '../../models/bookWarehouseDetail.model';
 import { BookService } from '../../services/book/book.service';
 import { DefaultValuePipe } from '../../pipes/default-value.pipe';
 import { Router } from '@angular/router';
@@ -66,8 +66,8 @@ export class BookListComponent {
         filter((result) => !!result),
         mergeMap(() =>
           forkJoin([
-            this.bookService.deleteOne(bookWareHouseDetail.book._id),
-            this.warehouseDetailService.deleteOne(
+            this.bookService.deleteBook(bookWareHouseDetail.book._id),
+            this.warehouseDetailService.deleteWarehouseDetail(
               bookWareHouseDetail.warehouseDetail._id
             ),
           ])
@@ -142,7 +142,7 @@ export class BookListComponent {
 
   private init(): void {
     this.warehouseDetailService
-      .getAll()
+      .getWarehouseDetails()
       .pipe(
         mergeMap((warehouseDetails: WarehouseDetail[]) => {
           return forkJoin(this.getBookWarehouseDetails(warehouseDetails));
@@ -161,7 +161,7 @@ export class BookListComponent {
     return warehouseDetails
       .filter((detail) => detail.bookId)
       .map((detail) => {
-        return this.bookService.getOne(detail.bookId).pipe(
+        return this.bookService.getBook(detail.bookId).pipe(
           map((book) => ({
             book,
             warehouseDetail: detail,
