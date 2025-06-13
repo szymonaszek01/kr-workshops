@@ -67,8 +67,6 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
       data?.bookWarehouseDetail?.warehouseDetail?._id
         ? true
         : false;
-
-    console.log(data);
   }
 
   ngOnInit(): void {
@@ -93,10 +91,6 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
         .get('currency')
         ?.setValue(this.data.bookWarehouseDetail.warehouseDetail.currency);
     }
-
-    // if (!this.data.bookWarehouseDetail.warehouseDetail.currency) {
-    //   this.addBookForm.get('currency')?.markAsTouched();
-    // }
   }
 
   onAddBook(): void {
