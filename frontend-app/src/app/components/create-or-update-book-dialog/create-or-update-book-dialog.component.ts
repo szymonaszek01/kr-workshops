@@ -72,6 +72,7 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.addBookForm.markAllAsTouched();
     if (this.isUpdated) {
       this.addBookForm
         .get('title')
@@ -106,6 +107,7 @@ export class CreateOrUpdateBookDialogComponent implements OnInit {
         author: this.addBookForm.value.author ?? '',
         quantity: this.addBookForm.value.quantity ?? 0,
         price: this.addBookForm.value.price ?? 0,
+        currency: this.addBookForm.value.currency ?? '',
       };
 
       this.dialogRef.close(

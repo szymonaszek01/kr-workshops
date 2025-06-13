@@ -79,6 +79,7 @@ export class AuthFormComponent implements OnDestroy {
           next: (user) => {
             localStorage.setItem('user', JSON.stringify(user));
             localStorage.setItem('userToken', user.token);
+            localStorage.setItem('refreshToken', user.refreshToken);
             this.router.navigateByUrl('book-list');
             this.toastr.success('User successfully logged in');
           },
