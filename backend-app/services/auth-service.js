@@ -14,9 +14,10 @@ const login = async ({ username, password }) => {
 
   const result = await comparePassword(password, passwordHash);
   if (result.match) {
-    const token = createJwt({ userId: userId, roles: [user.role] });
+    const token = createJwt({ userId: userId, roles: [user.role], expiresIn: '1m' });
+    const refreshToken = createJwt({ userId: userId, roles: [user.role], expiresIn: '3m' });
     console.log(`user (${userId}) signed in successfully`);
-    let authUser = { ...user._doc, token };
+    let authUser = { ...user._doc, token, refreshToken };
     delete authUser.password;
 
     return authUser;
@@ -27,8 +28,34 @@ const login = async ({ username, password }) => {
   }
 };
 
-const createJwt = ({ userId, roles }) => {
-  const token = jwt.sign({ userId, roles }, secretKey, { expiresIn: "15m" });
+const refreshToken = async (token) => {
+  if (!token) {
+    return res.status(401).json({
+      error: "Request does not contain token or token's signature is not valid",
+    });
+  }
+
+  let decodedToken = null;
+  try {
+    decodedToken = jwt.verify(token, secretKey);
+  } catch (error) {
+    res.status(401).json({ error: "Jwt is not valid or expired" });
+  }
+  const { userId } = decodedToken;
+
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    throw `User (${userId}) not found with provided id`;
+  }
+
+  const accessToken = createJwt({ userId, roles: [user.role], expiresIn: '1m' });
+  console.log(`Token for user (${userId}) refreshed successfully`);
+
+  return accessToken;
+};
+
+const createJwt = ({ userId, roles, expiresIn }) => {
+  const token = jwt.sign({ userId, roles }, secretKey, { expiresIn });
   console.log(`generated jwt (${token}) for user (${userId})`);
   return token;
 };
@@ -75,4 +102,5 @@ const comparePassword = async (password, hash) => {
 
 module.exports = {
   login,
+  refreshToken,
 };

@@ -7,4 +7,5 @@ export interface User {
   age: number;
   role: string;
   token: string;
+  refreshToken: string;
 }

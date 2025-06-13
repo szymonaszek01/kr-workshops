@@ -1,7 +1,12 @@
 <div class="w-100 flex-col gap-20">
   <div class="w-100 flex-row space-between">
     <h1>Books</h1>
-    <button type="button" (click)="logOut()">Log out</button>
+    <div>
+      <button type="button" (click)="openAddBookConfirmationDialog()">
+        Add book
+      </button>
+      <button type="button" (click)="logOut()">Log out</button>
+    </div>
   </div>
   <mat-card
     *ngFor="let bookWareHouseDetail of bookWareHouseDetails"
@@ -38,8 +43,18 @@
           </div>
         </div>
         <div class="w-100 flex-row gap-20">
-          <button type="button">Edit</button>
-          <button type="button" (click)="openConfirmationDialog(bookWareHouseDetail)">Delete</button>
+          <button
+            type="button"
+            (click)="openEditBookConfirmationDialog(bookWareHouseDetail)"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            (click)="openConfirmationDialog(bookWareHouseDetail)"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </mat-card-content>

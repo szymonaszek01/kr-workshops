@@ -1,6 +1,6 @@
 const WarehouseDetail = require("../models/warehouse-detail");
 
-const allowedParamKeys = ["quantity", "price", "currency"];
+const allowedParamKeys = ["quantity", "price", "currency", "bookId"];
 
 const getAllWarehouseDetails = async (params) => {
   const query = {};
@@ -25,17 +25,67 @@ const getWarehouseDetailById = async (id) => {
   return warehouseDetail;
 };
 
+const updateWarehouseDetailById = async (_id, updateWarehouseDetailReq) => {
+  const updateWarehouseDetailParams = {};
+  for (const paramKey in updateWarehouseDetailReq) {
+    if (allowedParamKeys.includes(paramKey)) {
+      if (!updateWarehouseDetailReq[paramKey]) {
+        throw `${paramKey} can not be null or empty`;
+      }
+      updateWarehouseDetailParams[paramKey] =
+        updateWarehouseDetailReq[paramKey];
+    }
+  }
+
+  try {
+    const updatedWarehouseDetail = await WarehouseDetail.updateOne(
+      { _id },
+      { $set: updateWarehouseDetailParams }
+    );
+    console.log(`WarehouseDetail (${updatedWarehouseDetail}) has been updated`);
+    return _id;
+  } catch (e) {
+    throw `Something went wrong: ${e}`;
+  }
+};
+
+const createWarehouseDetail = async (createWarehouseDetailReq) => {
+  const newWarehouseDetailParams = {};
+  for (const paramKey in createWarehouseDetailReq) {
+    if (allowedParamKeys.includes(paramKey)) {
+      if (!createWarehouseDetailReq[paramKey]) {
+        throw `${paramKey} can not be null or empty`;
+      }
+      newWarehouseDetailParams[paramKey] = createWarehouseDetailReq[paramKey];
+    }
+  }
+
+  try {
+    const newWarehouseDetail = await WarehouseDetail.create(
+      newWarehouseDetailParams
+    );
+    console.log(`WarehouseDetail (${newWarehouseDetail}) has been created`);
+    return newWarehouseDetail.id;
+  } catch (e) {
+    throw `Something went wrong: ${e}`;
+  }
+};
+
 const deleteWarehouseDetailById = async (id) => {
   try {
-    const {deletedCount} = await WarehouseDetail.deleteOne( { _id: id } );
-    return deletedCount ? `WarehouseDetail (${id}) was deleted successfully` : `WarehouseDetail (${id}) not found`;
- } catch (e) {
+    const { deletedCount } = await WarehouseDetail.deleteOne({ _id: id });
+    return deletedCount
+      ? `WarehouseDetail (${id}) was deleted successfully`
+      : `WarehouseDetail (${id}) not found`;
+  } catch (e) {
     throw `Something went wrong: ${e}`;
- }
+  }
 };
 
 module.exports = {
   getAllWarehouseDetails,
   getWarehouseDetailById,
-  deleteWarehouseDetailById
+  updateWarehouseDetailById,
+  createWarehouseDetail,
+  deleteWarehouseDetailById,
 };
